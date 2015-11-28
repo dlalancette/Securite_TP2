@@ -1,5 +1,8 @@
 package model;
 
-public class Banque {
+public class Banque extends Entite {
 
+	public Banque(){
+		super();
+	}
 }

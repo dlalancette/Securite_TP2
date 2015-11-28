@@ -4,28 +4,36 @@ import java.io.Console;
 import java.security.KeyPair;
 
 import UtilAlgo.RSA;
+import model.*;
 
 public class Main {
 
 	public static void main(String[] args) {
+		Banque banque;
+		Client client;
+		Marchand marchand;
+		Autorite_Certification autorite;
 		
-		String data = "données";	
-		String donneeEncrypteClePublic;
-		String donneeDesencrypteClePrive;
-		
-			
-		KeyPair keypair = RSA.getKeyPair();
 		try{
-			donneeEncrypteClePublic = RSA.EncryptPublicKey(data, keypair.getPublic());
-			donneeDesencrypteClePrive = RSA.DecryptPrivateKey(donneeEncrypteClePublic, keypair.getPrivate());
-		
+			banque = new Banque();
+			client = new Client();
+			marchand = new Marchand();
+			autorite = new Autorite_Certification();
 			
-		
+			banque.setCertificat(autorite.delivrerCertificatBanque(
+					banque.getId(), banque.getClePublique()));
+			
+			marchand.setCertificat(autorite.delivrerCertificatMarchand(
+					marchand.getId(), marchand.getClePublique(), banque.getClePublique()));
+			
+			client.setCertificat(autorite.delivrerCertificatBanque(
+					client.getId(), client.getClePublique()));
 		}
-		catch(Exception ex)
-		{
+		catch(Exception ex){
 			ex.printStackTrace();
 		}
+		
+		System.exit(0);
 	}
 
 }

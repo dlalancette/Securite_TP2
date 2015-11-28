@@ -1,5 +1,8 @@
 package model;
 
-public class Client {
-
+public class Client extends Entite {
+	
+	public Client(){
+		super();
+	}
 }
