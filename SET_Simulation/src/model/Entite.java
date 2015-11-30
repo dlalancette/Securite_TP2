@@ -10,13 +10,16 @@ import java.util.UUID;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
+import UtilAlgo.DES;
 import UtilAlgo.RSA;
 
 public class Entite {
 
 	protected UUID _id;
 	protected PrivateKey _clePrivee;
+	protected SecretKey _cleSecrete;
 	protected PublicKey _clePublique;
 	protected Certificat _certificat;
 	
@@ -42,17 +45,18 @@ public class Entite {
 		_id = java.util.UUID.randomUUID();
 		_clePrivee = keypair.getPrivate();
 		_clePublique = keypair.getPublic();
+		_cleSecrete = DES.generateSecretKey();
 	}
 	
 	//Encryption des données avec la clé publique de l'entite et l'algo RSA
-	public String EncrypterDonnees(String donneesClaires) 
+	public byte[] EncrypterDonnees(byte[] donneesClaires) 
 			throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException{
 		return RSA.EncryptPublicKey(donneesClaires, _clePublique);
 	}
 	
 	//Décryption des données avec la clé publique de l'entité et l'algo RSA
-	public String DecrypterDonnees(String donneesCryptees) 
+	public byte[] DecrypterDonnees(byte[] donneesCryptees) 
 			throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException{
 		return RSA.DecryptPrivateKey(donneesCryptees, _clePrivee);

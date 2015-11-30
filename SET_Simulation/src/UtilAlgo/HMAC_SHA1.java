@@ -33,4 +33,13 @@ public class HMAC_SHA1 {
 
 		return Base64.getEncoder().encodeToString(hmacCode);
 	}
+	
+	public static boolean ValidationHMAC(String data,String codeHMAC)
+	{
+		
+		if(DigestUtils.sha1Hex(data).equals(codeHMAC))
+			return true;
+		
+		return false;
+	}
 }

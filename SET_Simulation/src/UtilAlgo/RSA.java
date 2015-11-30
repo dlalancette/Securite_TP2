@@ -12,6 +12,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 public class RSA {
 	 
@@ -28,24 +29,17 @@ public class RSA {
 
 	    }
 	 
-	    public static String EncryptPublicKey(String data,PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+	    public static byte[] EncryptPublicKey(byte[] data,PublicKey clePublique) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
 	        final Cipher cipher = Cipher.getInstance("RSA");
-	        // ENCRYPT using the PUBLIC key
-	        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-	         byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-	         return new String(Base64.getEncoder().encode(encryptedBytes));
+	        cipher.init(Cipher.ENCRYPT_MODE, clePublique);
+	        return cipher.doFinal(data);
 	    }
 	    
-	    public static String DecryptPrivateKey(String data,PrivateKey Privatekey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+	    public static byte[] DecryptPrivateKey(byte[] data,PrivateKey clePrive) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
 	    {
 	    	 final Cipher cipher = Cipher.getInstance("RSA");
-	         // DECRYPT using the PRIVATE key
-	         cipher.init(Cipher.DECRYPT_MODE, Privatekey);
-	         byte[] ciphertextBytes = Base64.getDecoder().decode(data.getBytes());
-	         byte[] decryptedBytes = cipher.doFinal(ciphertextBytes);
-	         return new String(decryptedBytes);
-	            
-	      
+	         cipher.init(Cipher.DECRYPT_MODE, clePrive);
+	         return cipher.doFinal(data);
 	    }
 	
 }
